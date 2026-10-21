@@ -1,0 +1,18 @@
+# Render Blueprint for the backend API (Dashboard -> New -> Blueprint -> pick this repo)
+services:
+  - type: web
+    name: course-enrollment-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false # paste your MongoDB Atlas connection string in the Render dashboard
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLIENT_URL
+        sync: false # your Vercel URL, e.g. https://ps0-course-enrollment.vercel.app

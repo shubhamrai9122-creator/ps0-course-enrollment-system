@@ -1,0 +1,27 @@
+{
+  "name": "course-enrollment-batch-management-system",
+  "version": "1.0.0",
+  "description": "PS0 Course Enrollment & Batch Management System (MERN Stack)",
+  "scripts": {
+    "start": "node backend/server.js",
+    "seed": "npm --prefix backend run seed",
+    "test": "node backend/scripts/test-backend.js",
+    "create-admin": "npm --prefix backend run create-admin",
+    "make-admin": "npm --prefix backend run make-admin",
+    "build": "npm --prefix frontend run build",
+    "backend": "npm --prefix backend start",
+    "frontend": "npm --prefix frontend run dev"
+  },
+  "keywords": [
+    "course-enrollment",
+    "batch-management",
+    "ps0",
+    "mern",
+    "mongodb",
+    "express",
+    "react",
+    "node"
+  ],
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,989 @@
+/* ============================================================
+   Course Enrollment & Batch Management System (PS0) - Core Styles
+   Clean, practical, accessible student project design
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  line-height: 1.5;
+  font-size: 15px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ------------------- Layout ------------------- */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 24px 0 48px;
+}
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 16px;
+  width: 100%;
+}
+
+.page-header {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.page-subtitle {
+  color: #64748b;
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+/* ------------------- Navbar ------------------- */
+.navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+
+.navbar-brand {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.navbar-brand:hover {
+  text-decoration: none;
+  color: #2563eb;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  list-style: none;
+}
+
+.navbar-links a {
+  color: #475569;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+  color: #1e293b;
+  background-color: #f1f5f9;
+  text-decoration: none;
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-tag {
+  font-size: 13px;
+  color: #334155;
+  background-color: #f1f5f9;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+}
+
+.role-tag-admin {
+  background-color: #fee2e2;
+  color: #991b1b;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  margin-left: 4px;
+}
+
+.role-tag-student {
+  background-color: #dbeafe;
+  color: #1e40af;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  margin-left: 4px;
+}
+
+/* ------------------- Cards ------------------- */
+.card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 10px;
+}
+
+/* ------------------- Metrics Grid ------------------- */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.metric-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 16px 20px;
+}
+
+.metric-card-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metric-card-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 6px;
+}
+
+.metric-card-sub {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* ------------------- Current Batch Cards ------------------- */
+.balance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.balance-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.balance-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.balance-card-days {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.balance-card-num {
+  font-size: 26px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.balance-card-total {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.balance-card-used {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 6px;
+}
+
+/* ------------------- Forms ------------------- */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.form-label .required {
+  color: #dc2626;
+  margin-left: 2px;
+}
+
+.form-control,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #0f172a;
+  font-family: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.form-control[disabled],
+.form-select[disabled],
+.form-textarea[disabled] {
+  background-color: #f1f5f9;
+  cursor: not-allowed;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.form-helper {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* ------------------- Buttons ------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.btn:hover {
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-secondary {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+  color: #334155;
+}
+
+.btn-secondary:hover {
+  background-color: #f1f5f9;
+}
+
+.btn-danger {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background-color: #b91c1c;
+}
+
+.btn-success {
+  background-color: #16a34a;
+  color: #ffffff;
+}
+
+.btn-success:hover {
+  background-color: #15803d;
+}
+
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-warning {
+  background-color: #f59e0b;
+  color: #ffffff;
+}
+
+.btn-warning:hover {
+  background-color: #d97706;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ------------------- Tables ------------------- */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  padding: 10px 12px;
+  border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #1e293b;
+  vertical-align: middle;
+}
+
+.table tr:hover td {
+  background-color: #f8fafc;
+}
+
+/* ------------------- Status Badges ------------------- */
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* Enrollment statuses */
+.badge-active {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.badge-completed {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.badge-dropped {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.badge-waitlisted {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+/* Batch modes */
+.badge-online {
+  background-color: #ede9fe;
+  color: #6d28d9;
+}
+
+.badge-offline {
+  background-color: #ccfbf1;
+  color: #0f766e;
+}
+
+/* Batch phases */
+.badge-upcoming {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.badge-ongoing {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.badge-ended {
+  background-color: #f1f5f9;
+  color: #64748b;
+}
+
+.badge-full {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ------------------- Alerts ------------------- */
+.alert {
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+
+.alert-error {
+  background-color: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+}
+
+.alert-success {
+  background-color: #dcfce7;
+  border: 1px solid #86efac;
+  color: #166534;
+}
+
+.alert-info {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+}
+
+/* ------------------- Auth Pages ------------------- */
+.auth-wrapper {
+  max-width: 440px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+
+.auth-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 28px;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.auth-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.auth-subtitle {
+  color: #64748b;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.auth-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* ------------------- Detail Lists ------------------- */
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.detail-item {
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 8px;
+}
+
+.detail-label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.detail-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-top: 2px;
+}
+
+/* ------------------- Empty & Loading States ------------------- */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #64748b;
+}
+
+.empty-state-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.empty-state-desc {
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 48px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* ------------------- Filter Bar ------------------- */
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  background-color: #ffffff;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+}
+
+/* ------------------- Footer ------------------- */
+.app-footer {
+  background-color: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  padding: 16px 0;
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+  margin-top: auto;
+}
+
+/* ------------------- Course Cards ------------------- */
+.result-count {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 12px;
+}
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.course-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.course-card:hover {
+  border-color: #bfdbfe;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+}
+
+.course-card-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.course-code {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #1e40af;
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 2px 8px;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+.course-card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.3;
+}
+
+.course-card-desc {
+  font-size: 13px;
+  color: #475569;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.course-card-facts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.course-card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.course-card-next {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.course-description {
+  font-size: 14px;
+  color: #334155;
+  line-height: 1.7;
+}
+
+/* ------------------- Seats ------------------- */
+.seats-text {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.seat-bar {
+  width: 100%;
+  height: 6px;
+  background-color: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.seat-bar-fill {
+  height: 100%;
+  background-color: #2563eb;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.seat-bar-fill.warn {
+  background-color: #f59e0b;
+}
+
+.seat-bar-fill.full {
+  background-color: #dc2626;
+}
+
+/* ------------------- Misc helpers ------------------- */
+.cell-sub {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.row-note {
+  font-size: 12px;
+  color: #64748b;
+  font-style: italic;
+}
+
+.form-error {
+  font-size: 12px;
+  color: #dc2626;
+  margin-top: 4px;
+}
+
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 10px;
+}
+
+.card-header-row h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.form-panel {
+  border-color: #bfdbfe;
+  background-color: #f8fbff;
+}
+
+.loading-inline {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.demo-box {
+  margin-top: 20px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 4px;
+  font-size: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.alert-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  border: 1px solid #bfdbfe;
+  background-color: #eff6ff;
+  color: #1e3a8a;
+}
+
+.status-banner-waitlisted {
+  border-color: #fde68a;
+  background-color: #fffbeb;
+  color: #92400e;
+}
+
+.status-banner-completed {
+  border-color: #bbf7d0;
+  background-color: #f0fdf4;
+  color: #166534;
+}
+
+/* ------------------- Dashboard extras ------------------- */
+.metric-card-value-text {
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.metric-card-of {
+  font-size: 16px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.metrics-strip {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: #475569;
+  margin: -8px 0 20px;
+}
+
+.two-col-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+  gap: 20px;
+}
+
+.balance-card-link {
+  display: block;
+  color: inherit;
+  transition: border-color 0.15s ease;
+}
+
+.balance-card-link:hover {
+  text-decoration: none;
+  border-color: #93c5fd;
+}
+
+.balance-card-batch {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.balance-card-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+/* ------------------- Status toggle (batch roster) ------------------- */
+.status-toggle {
+  display: inline-flex;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.toggle-btn {
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  border-right: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  color: #475569;
+  cursor: pointer;
+}
+
+.toggle-btn:last-child {
+  border-right: none;
+}
+
+.toggle-btn:hover:not(:disabled) {
+  background-color: #f1f5f9;
+}
+
+.toggle-btn:disabled {
+  cursor: default;
+}
+
+.toggle-on-active {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.toggle-on-completed {
+  background-color: #16a34a;
+  color: #ffffff;
+}
+
+.toggle-on-dropped {
+  background-color: #64748b;
+  color: #ffffff;
+}
+
+/* ------------------- Responsive ------------------- */
+@media (max-width: 768px) {
+  .navbar-inner {
+    flex-direction: column;
+    height: auto;
+    padding: 12px 0;
+    gap: 12px;
+  }
+  .navbar-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
