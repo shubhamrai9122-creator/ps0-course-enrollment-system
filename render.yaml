@@ -1,7 +1,7 @@
 # Render Blueprint for the backend API (Dashboard -> New -> Blueprint -> pick this repo)
 services:
   - type: web
-    name: course-enrollment-api
+    name: ps0-course-enrollment-api
     runtime: node
     plan: free
     rootDir: backend
