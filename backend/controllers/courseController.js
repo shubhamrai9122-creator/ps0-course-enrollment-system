@@ -71,10 +71,12 @@ const getCourses = async (req, res, next) => {
       filter.$or = [{ title: regex }, { code: regex }, { description: regex }];
     }
 
-    const courses = await Course.find(filter).sort(SORT_OPTIONS[sort] || SORT_OPTIONS.title);
-
-    // Attach batch summary (count, open batches, seats left) to every course
-    const batches = await Batch.find({ course: { $in: courses.map((c) => c._id) } });
+    // Fetched in parallel; batches are matched to courses below to attach
+    // a batch summary (count, open batches, seats left) to every course
+    const [courses, batches] = await Promise.all([
+      Course.find(filter).sort(SORT_OPTIONS[sort] || SORT_OPTIONS.title),
+      Batch.find()
+    ]);
 
     const data = courses.map((course) => {
       const courseBatches = batches
@@ -110,7 +112,21 @@ const getCourses = async (req, res, next) => {
 // @access  Private
 const getCourseById = async (req, res, next) => {
   try {
-    const course = await Course.findById(req.params.id);
+    const courseId = req.params.id;
+
+    // Independent queries run in parallel
+    const [course, batches, enrollment, enrolledCount] = await Promise.all([
+      Course.findById(courseId),
+      Batch.find({ course: courseId }).sort({ startDate: 1, name: 1 }),
+      req.user.role === 'student'
+        ? Enrollment.findOne({ student: req.user._id, course: courseId }).populate(
+            'batch',
+            'name startDate timing mode'
+          )
+        : null,
+      Enrollment.countDocuments({ course: courseId, status: { $in: SEAT_STATUSES } })
+    ]);
+
     if (!course) {
       return res.status(404).json({
         success: false,
@@ -118,25 +134,11 @@ const getCourseById = async (req, res, next) => {
       });
     }
 
-    const batches = await Batch.find({ course: course._id }).sort({ startDate: 1, name: 1 });
-
     let myEnrollment = null;
-    if (req.user.role === 'student') {
-      const enrollment = await Enrollment.findOne({
-        student: req.user._id,
-        course: course._id
-      }).populate('batch', 'name startDate timing mode');
-
-      if (enrollment) {
-        myEnrollment = enrollment.toObject();
-        myEnrollment.waitlistPosition = await Enrollment.getWaitlistPosition(enrollment);
-      }
+    if (enrollment) {
+      myEnrollment = enrollment.toObject();
+      myEnrollment.waitlistPosition = await Enrollment.getWaitlistPosition(enrollment);
     }
-
-    const enrolledCount = await Enrollment.countDocuments({
-      course: course._id,
-      status: { $in: SEAT_STATUSES }
-    });
 
     res.status(200).json({
       success: true,

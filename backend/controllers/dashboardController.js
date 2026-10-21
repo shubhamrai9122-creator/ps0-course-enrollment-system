@@ -12,19 +12,17 @@ const getStudentDashboard = async (req, res, next) => {
   try {
     const studentId = req.user._id;
 
-    const [activeCount, completedCount, waitlistedCount, droppedCount] = await Promise.all([
-      Enrollment.countDocuments({ student: studentId, status: 'Active' }),
-      Enrollment.countDocuments({ student: studentId, status: 'Completed' }),
-      Enrollment.countDocuments({ student: studentId, status: 'Waitlisted' }),
-      Enrollment.countDocuments({ student: studentId, status: 'Dropped' })
-    ]);
-
     const enrollments = await Enrollment.find({ student: studentId })
       .populate('course', 'title code durationWeeks fee')
       .populate('batch', 'name startDate timing mode')
       .sort({ updatedAt: -1 });
 
     const valid = enrollments.filter((e) => e.course && e.batch);
+    const countOf = (status) => valid.filter((e) => e.status === status).length;
+    const activeCount = countOf('Active');
+    const completedCount = countOf('Completed');
+    const waitlistedCount = countOf('Waitlisted');
+    const droppedCount = countOf('Dropped');
 
     // Batches the student is currently attending or about to start
     const currentBatches = valid
@@ -75,18 +73,41 @@ const getStudentDashboard = async (req, res, next) => {
 // @access  Private (Admin only)
 const getAdminDashboard = async (req, res, next) => {
   try {
-    const [totalCourses, totalStudents, activeCount, completedCount, droppedCount, waitlistedCount] =
-      await Promise.all([
-        Course.countDocuments(),
-        User.countDocuments({ role: 'student' }),
-        Enrollment.countDocuments({ status: 'Active' }),
-        Enrollment.countDocuments({ status: 'Completed' }),
-        Enrollment.countDocuments({ status: 'Dropped' }),
-        Enrollment.countDocuments({ status: 'Waitlisted' })
-      ]);
+    // All queries run in parallel: each one is a network round trip to the database
+    const [
+      courses,
+      totalStudents,
+      activeCount,
+      completedCount,
+      droppedCount,
+      waitlistedCount,
+      batches,
+      courseAgg,
+      recentEnrollments
+    ] = await Promise.all([
+      Course.find().sort({ title: 1 }),
+      User.countDocuments({ role: 'student' }),
+      Enrollment.countDocuments({ status: 'Active' }),
+      Enrollment.countDocuments({ status: 'Completed' }),
+      Enrollment.countDocuments({ status: 'Dropped' }),
+      Enrollment.countDocuments({ status: 'Waitlisted' }),
+      Batch.find().populate('course', 'title code durationWeeks'),
+      // Course-wise enrollments (Active + Completed hold a seat)
+      Enrollment.aggregate([
+        { $match: { status: { $in: SEAT_STATUSES } } },
+        { $group: { _id: '$course', enrollments: { $sum: 1 } } }
+      ]),
+      // Recent 5 enrollments institute-wide
+      Enrollment.find()
+        .populate('student', 'name email')
+        .populate('course', 'title code')
+        .populate('batch', 'name mode')
+        .sort({ updatedAt: -1 })
+        .limit(5)
+    ]);
+    const totalCourses = courses.length;
 
     // Active batches = batches that are ongoing or upcoming (not yet ended)
-    const batches = await Batch.find().populate('course', 'title code durationWeeks');
     const batchMeta = batches.filter((b) => b.course).map((b) => b.toMeta());
     const ongoing = batchMeta.filter((b) => b.phase === 'Ongoing');
     const upcoming = batchMeta.filter((b) => b.phase === 'Upcoming');
@@ -94,14 +115,8 @@ const getAdminDashboard = async (req, res, next) => {
       (a, b) => new Date(a.startDate) - new Date(b.startDate)
     );
 
-    // Course-wise enrollments (Active + Completed hold a seat)
-    const courseAgg = await Enrollment.aggregate([
-      { $match: { status: { $in: SEAT_STATUSES } } },
-      { $group: { _id: '$course', enrollments: { $sum: 1 } } }
-    ]);
     const enrollmentsByCourse = new Map(courseAgg.map((c) => [c._id.toString(), c.enrollments]));
 
-    const courses = await Course.find().sort({ title: 1 });
     const courseWiseStats = courses
       .map((course) => {
         const courseBatches = batchMeta.filter((b) => b.course._id.toString() === course._id.toString());
@@ -121,14 +136,6 @@ const getAdminDashboard = async (req, res, next) => {
 
     const mostPopularCourse =
       courseWiseStats.length > 0 && courseWiseStats[0].enrollments > 0 ? courseWiseStats[0] : null;
-
-    // Recent 5 enrollments institute-wide
-    const recentEnrollments = await Enrollment.find()
-      .populate('student', 'name email')
-      .populate('course', 'title code')
-      .populate('batch', 'name mode')
-      .sort({ updatedAt: -1 })
-      .limit(5);
 
     res.status(200).json({
       success: true,

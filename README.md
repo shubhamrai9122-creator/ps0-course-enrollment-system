@@ -12,10 +12,11 @@ A MERN-stack web application for a training institute to manage its **courses**,
 
 | Part | URL |
 | :--- | :--- |
-| Frontend (Vercel) | _add your Vercel URL here after deploying_ |
-| Backend API (Render) | _add your Render URL here after deploying_ |
+| **Frontend (Vercel)** | **https://ps0-course-enrollment-system.vercel.app** |
+| Backend API (Render) | https://ps0-course-enrollment-api.onrender.com ([health check](https://ps0-course-enrollment-api.onrender.com/api/health)) |
+| Database | MongoDB Atlas (`course_enrollment_db`) |
 
-Deployment takes about 10 minutes: see [Deployment](#deployment).
+> The backend runs on Render's free plan, which sleeps after 15 minutes without traffic. The first request after a break can take about 50 seconds; after that the site is fast.
 
 ## Test Logins
 
@@ -316,13 +317,14 @@ All responses are JSON: `{ success, message?, data? }`. Protected routes need `A
 3. Copy the connection string and add the database name, e.g. `.../course_enrollment_db?retryWrites=true&w=majority`.
 
 ### 2. Backend on Render
-1. Render dashboard → **New → Blueprint** → select this repository (it reads `render.yaml`), *or* **New → Web Service** with root directory `backend`, build `npm install`, start `npm start`.
-2. Set `MONGO_URI` (Atlas string) and `CLIENT_URL` (your Vercel URL, set after step 3). `JWT_SECRET` is generated automatically; `PORT` is provided by Render.
+1. Open `https://render.com/deploy?repo=https://github.com/shubhamrai9122-creator/ps0-course-enrollment-system` (or Render dashboard → **New → Blueprint** → this repo). It reads `render.yaml`: free plan, root `backend`, `npm install` / `npm start`, health check `/api/health`.
+2. Fill in `MONGO_URI` (Atlas string) and `CLIENT_URL` (the Vercel URL), then click **Deploy Blueprint**. `JWT_SECRET` is generated automatically and Render provides `PORT`.
 3. Seed the Atlas database once from your machine: put the Atlas `MONGO_URI` in `backend/.env` and run `npm run seed`.
 
 ### 3. Frontend on Vercel
-1. Vercel → **Add New Project** → import this repository, set **Root Directory** to `frontend` (framework: Vite).
-2. Add the environment variable `VITE_API_URL=https://<your-render-service>.onrender.com/api` and deploy.
-3. `frontend/vercel.json` rewrites every path to `index.html`, so refreshing `/courses/123` does not 404 (Netlify users get the same from `public/_redirects`).
-4. Copy the Vercel URL into Render's `CLIENT_URL` and redeploy the backend so CORS allows it.
-5. Put both URLs in the **Live URL** table at the top of this README.
+1. Vercel → **Add New → Project** → import this repository. Vercel detects two apps; click **Import single project** on the **frontend (Vite)** one, so the Root Directory is `frontend`.
+2. Add the environment variable `VITE_API_URL=https://<your-render-service>.onrender.com/api` and click **Deploy**.
+3. `frontend/vercel.json` rewrites every path to `index.html`, so refreshing `/courses/123` does not 404 (Netlify users get the same from `public/_redirects`). If the project is imported with Root Directory `./` instead, the root `vercel.json` builds `frontend/` and applies the same rewrite.
+4. If the Vercel URL differs from `CLIENT_URL`, update `CLIENT_URL` in Render (Environment → Save) so CORS allows it.
+
+Pushing to `main` redeploys both Render and Vercel automatically.
